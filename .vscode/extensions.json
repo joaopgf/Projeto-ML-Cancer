@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "ms-python.debugpy",
+    "ms-toolsai.jupyter",
+    "mechatroner.rainbow-csv",
+    "usernamehw.errorlens",
+    "cweijan.vscode-office",
+    "ms-ceintl.vscode-language-pack-pt-br"
+  ]
+}

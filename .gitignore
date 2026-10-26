@@ -1,0 +1,38 @@
+# Ambiente virtual
+.venv/
+venv/
+
+# Cache do Python
+__pycache__/
+*.py[cod]
+
+# Notebooks
+.ipynb_checkpoints/
+
+# Datasets (nunca commitar)
+data/*
+!data/.gitkeep
+*.csv
+*.tsv
+*.xlsx
+*.xls
+*.parquet
+*.json.gz
+*.zip
+*.rar
+*.7z
+*.npy
+*.npz
+*.h5
+*.hdf5
+*.pkl
+
+# Modelos treinados (arquivos grandes)
+*.pt
+*.pth
+*.ckpt
+
+# Configurações locais
+.env
+.vscode/*
+!.vscode/extensions.json
