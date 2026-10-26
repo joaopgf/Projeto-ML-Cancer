@@ -2,86 +2,106 @@
 
 Projeto de Machine Learning do Bootcamp de IA da TCS.
 
-## Como preparar o ambiente
+O ambiente roda em **Docker**: um container com Python, PyTorch (CUDA para GPU) e todas as bibliotecas do projeto, acessado pelo **JupyterLab** no navegador.
+
+## Pré-requisitos
+
+- **Windows:** Docker Desktop com WSL2 e driver da NVIDIA atualizado.
+- **Linux:** Docker e [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html).
+
+> O container precisa de uma placa NVIDIA. Sem ela, o `docker compose up` falha.
+
+## Como usar
 
 Os PCs do SENAI são resetados ao desligar, então esse passo a passo precisa ser feito **toda vez** que ligar o PC.
 
-### 1. Clonar o repositório pelo VS Code
+### 1. Abrir o Docker Desktop
+
+Abra o Docker Desktop e espere ele terminar de iniciar.
+
+### 2. Clonar o repositório pelo VS Code
 
 1. Abra o VS Code.
 2. Aperte `Ctrl+Shift+P`, digite **Git: Clone** e cole a URL do repositório.
 3. Escolha a pasta onde salvar e clique em **Abrir** quando aparecer a pergunta.
 
-### 2. Rodar o script de instalação
+### 3. Colocar o dataset na pasta `data/`
 
-1. Abra o terminal do VS Code com ``Ctrl+` `` (ou menu **Terminal → Novo Terminal**).
-2. Digite:
+Veja a seção [Datasets](#datasets).
 
-   ```
-   .\setup.bat
-   ```
+### 4. Subir o container
 
-O script faz automaticamente:
+Abra o terminal do VS Code com ``Ctrl+` `` (ou menu **Terminal → Novo Terminal**) e rode:
 
-- cria o ambiente virtual `.venv`;
-- instala os pacotes do `requirements.txt` (incluindo o PyTorch com CUDA para GPU);
-- instala as extensões do VS Code usadas no projeto.
+```
+docker compose up --build
+```
 
-> O download é grande (só o PyTorch tem cerca de 2,5 GB), então pode demorar alguns minutos.
+Na primeira vez demora, porque baixa e instala todos os pacotes (a imagem fica com vários GB). Se a imagem já existir no PC, `docker compose up` (sem `--build`) sobe mais rápido.
 
-### 3. Configurar o VS Code
+### 5. Abrir o JupyterLab
 
-1. Recarregue a janela para ativar as extensões: `Ctrl+Shift+P` → **Developer: Reload Window**.
-2. Selecione o Python do ambiente virtual: `Ctrl+Shift+P` → **Python: Select Interpreter** → escolha a opção com `.venv`.
-3. Nos notebooks (`.ipynb`), clique em **Select Kernel** no canto superior direito e escolha o `.venv`.
+Quando aparecer `Jupyter Server ... is running at` no terminal, abra no navegador:
 
-### 4. Conferir se a GPU está funcionando
+```
+http://localhost:8888
+```
 
-Rode em um notebook ou arquivo Python:
+### 6. Conferir se a GPU está funcionando
+
+Em um notebook, rode:
 
 ```python
 import torch
 print(torch.cuda.is_available())  # deve mostrar True
 ```
 
-Se aparecer `False`, verifique se o PC tem placa NVIDIA e se o driver está atualizado.
+Se aparecer `False`, verifique se o driver da NVIDIA está atualizado.
 
-## Rodando com Docker (JupyterLab)
+### Para parar
 
-Alternativa ao `setup.bat`: o Docker monta o ambiente sozinho e sobe um JupyterLab com acesso à GPU. Funciona em Windows e Linux.
+Aperte `Ctrl+C` no terminal ou rode `docker compose down`.
 
-### Pré-requisitos
+## Como funciona
 
-- **Windows:** Docker Desktop aberto, com WSL2, e driver da NVIDIA atualizado.
-- **Linux:** Docker e [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html).
-
-### Como usar
-
-No terminal do VS Code, na pasta do projeto:
-
-```
-docker compose up --build
-```
-
-Na primeira vez demora, porque baixa e instala todos os pacotes (a imagem fica com vários GB). Quando aparecer `Jupyter Server ... is running at`, abra no navegador:
-
-```
-http://localhost:8888
-```
-
-Para parar, aperte `Ctrl+C` no terminal ou rode `docker compose down`.
-
-### Como funciona
-
-- A pasta do projeto é compartilhada com o container: notebooks criados no Jupyter aparecem no repositório, e os datasets em `data/` ficam disponíveis no container sem entrar na imagem.
+- A pasta do projeto é compartilhada com o container (ela aparece como `/app` lá dentro). Tudo que for salvo no JupyterLab vai direto para a pasta do projeto no PC, e o que mudar no PC aparece na hora no JupyterLab.
 - O Jupyter roda **sem senha** e só pode ser acessado pelo próprio PC (`127.0.0.1`).
-- Se mudar o `requirements.txt`, rode de novo com `--build` para atualizar a imagem.
+- Salve sempre dentro da pasta do projeto. Arquivos salvos em outras pastas do container (como `/tmp`) somem quando o container é recriado.
+
+### Rodando arquivos `.py`
+
+No JupyterLab, abra **File → New → Terminal** e rode:
+
+```
+python nome_do_arquivo.py
+```
+
+Ou, pelo terminal do VS Code, com o container ligado:
+
+```
+docker compose exec jupyter python nome_do_arquivo.py
+```
+
+### Adicionando pacotes
+
+Não use `pip install` dentro do container: o pacote some quando o container é recriado e os colegas não recebem. Em vez disso:
+
+1. Adicione o pacote ao `requirements.txt`.
+2. Rode `docker compose up --build`.
+3. Faça commit do `requirements.txt` para todos receberem.
 
 ## Datasets
 
-Coloque os datasets na pasta `data/`. Ela é ignorada pelo Git, então os arquivos **não vão para o GitHub** e cada um precisa baixar o dataset no próprio PC.
+Coloque os datasets na pasta `data/`. No código, use caminhos relativos:
 
-Também são ignorados em qualquer pasta os arquivos `.csv`, `.xlsx`, `.parquet`, `.zip`, `.npy`, `.pkl` e outros formatos de dados (veja o `.gitignore`).
+```python
+import pandas as pd
+
+df = pd.read_csv("data/nome-do-arquivo.csv")      # notebook na raiz do projeto
+df = pd.read_csv("../data/nome-do-arquivo.csv")   # notebook em uma subpasta
+```
+
+A pasta `data/` é ignorada pelo Git, então os arquivos **não vão para o GitHub** e cada um precisa baixar o dataset no próprio PC. Também são ignorados em qualquer pasta os arquivos `.csv`, `.xlsx`, `.parquet`, `.zip`, `.npy`, `.pkl` e outros formatos de dados (veja o `.gitignore`).
 
 Para conferir se um arquivo está sendo ignorado:
 
@@ -89,29 +109,41 @@ Para conferir se um arquivo está sendo ignorado:
 git check-ignore -v data/nome-do-arquivo.csv
 ```
 
-## Problemas comuns
+> Modelos treinados (`.pt`, `.pth`) também são ignorados. Como os PCs resetam, salvem os que quiserem manter em um pendrive ou no Drive.
 
-**"`.\setup.bat` não é reconhecido como comando"**
-Confira se o terminal está na pasta do projeto e se você digitou o `.\` antes do nome.
+## Git
 
-**"A execução de scripts foi desabilitada neste sistema"**
-O Windows está bloqueando a ativação do `.venv` no PowerShell. Rode no terminal:
+O Git é usado **pelo PC** (terminal do VS Code ou aba de Controle do Código-Fonte), não dentro do container. Como a pasta é compartilhada, o que for salvo no JupyterLab já aparece no `git status`.
 
 ```
-Set-ExecutionPolicy -Scope Process Bypass
+git pull                        # antes de começar: baixar o que os colegas enviaram
+git add .
+git commit -m "mensagem curta"
+git push                        # antes de desligar o PC!
 ```
 
-Isso vale só para aquele terminal e não precisa de administrador. Outra opção é trocar o terminal para **Command Prompt** na setinha ao lado do **+** do terminal.
+Cuidados:
 
-**As extensões não foram instaladas**
-O comando `code` pode não estar disponível no terminal. Nesse caso, ao abrir a pasta do projeto, o VS Code mostra o aviso **"Deseja instalar as extensões recomendadas?"**: basta clicar em **Instalar**.
+- **Salve o notebook no JupyterLab** (`Ctrl+S`) antes de dar commit.
+- **Depois de um `git pull`, recarregue o notebook** aberto no JupyterLab, senão ao salvar você sobrescreve o que veio do pull.
+- **Evitem duas pessoas editando o mesmo `.ipynb`**: conflitos em notebooks são difíceis de resolver.
+- **Faça push antes de desligar**: o PC reseta e o que não foi enviado para o GitHub se perde.
 
-## Extensões do VS Code
+Se o Git pedir nome e e-mail:
+
+```
+git config --global user.name "Seu Nome"
+git config --global user.email "seu@email.com"
+```
+
+## Extensões do VS Code (opcional)
+
+Ao abrir a pasta do projeto, o VS Code sugere instalar as extensões recomendadas. Elas ajudam a editar o código no VS Code, mas não são necessárias para usar o JupyterLab.
 
 | Extensão | Para quê |
 |---|---|
-| Python, Pylance, Python Debugger | Rodar, autocompletar e depurar arquivos `.py` |
-| Jupyter | Rodar notebooks `.ipynb` |
+| Python, Pylance, Python Debugger | Autocompletar e verificar erros em arquivos `.py` |
+| Jupyter | Abrir notebooks no VS Code usando o Jupyter do container (**Select Kernel → Existing Jupyter Server** → `http://localhost:8888`) |
 | Rainbow CSV | Colorir as colunas dos arquivos `.csv` |
 | Error Lens | Mostrar os erros na própria linha do código |
 | Office Viewer | Visualizar arquivos Excel, Word e PDF dentro do VS Code |
