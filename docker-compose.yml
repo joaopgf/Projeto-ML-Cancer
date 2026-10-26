@@ -1,0 +1,18 @@
+services:
+  jupyter:
+    build: .
+    image: projeto-ml-cancer
+    container_name: projeto-ml-cancer
+    ports:
+      # Só acessível pelo próprio PC (o Jupyter roda sem senha)
+      - "127.0.0.1:8888:8888"
+    volumes:
+      # Notebooks, código e data/ ficam no PC, não dentro do container
+      - .:/app
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]

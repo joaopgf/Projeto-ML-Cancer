@@ -46,6 +46,37 @@ print(torch.cuda.is_available())  # deve mostrar True
 
 Se aparecer `False`, verifique se o PC tem placa NVIDIA e se o driver está atualizado.
 
+## Rodando com Docker (JupyterLab)
+
+Alternativa ao `setup.bat`: o Docker monta o ambiente sozinho e sobe um JupyterLab com acesso à GPU. Funciona em Windows e Linux.
+
+### Pré-requisitos
+
+- **Windows:** Docker Desktop aberto, com WSL2, e driver da NVIDIA atualizado.
+- **Linux:** Docker e [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html).
+
+### Como usar
+
+No terminal do VS Code, na pasta do projeto:
+
+```
+docker compose up --build
+```
+
+Na primeira vez demora, porque baixa e instala todos os pacotes (a imagem fica com vários GB). Quando aparecer `Jupyter Server ... is running at`, abra no navegador:
+
+```
+http://localhost:8888
+```
+
+Para parar, aperte `Ctrl+C` no terminal ou rode `docker compose down`.
+
+### Como funciona
+
+- A pasta do projeto é compartilhada com o container: notebooks criados no Jupyter aparecem no repositório, e os datasets em `data/` ficam disponíveis no container sem entrar na imagem.
+- O Jupyter roda **sem senha** e só pode ser acessado pelo próprio PC (`127.0.0.1`).
+- Se mudar o `requirements.txt`, rode de novo com `--build` para atualizar a imagem.
+
 ## Datasets
 
 Coloque os datasets na pasta `data/`. Ela é ignorada pelo Git, então os arquivos **não vão para o GitHub** e cada um precisa baixar o dataset no próprio PC.

@@ -1,0 +1,11 @@
+# Só o requirements.txt é copiado para a imagem; o resto chega pelo volume
+.git/
+.venv/
+venv/
+.vscode/
+data/
+__pycache__/
+.ipynb_checkpoints/
+*.pt
+*.pth
+*.ckpt
