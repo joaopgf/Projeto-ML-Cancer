@@ -26,6 +26,7 @@ data/*
 *.h5
 *.hdf5
 *.pkl
+config
 
 # Modelos treinados (arquivos grandes)
 *.pt
@@ -36,3 +37,6 @@ data/*
 .env
 .vscode/*
 !.vscode/extensions.json
+
+.git
+.Trash-0
