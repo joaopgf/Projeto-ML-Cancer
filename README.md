@@ -2,7 +2,52 @@
 
 Projeto de Machine Learning do Bootcamp de IA da TCS.
 
-O ambiente roda em **Docker**: um container com Python, PyTorch (CUDA para GPU) e todas as bibliotecas do projeto, acessado pelo **JupyterLab** no navegador.
+O projeto pode rodar de duas formas:
+
+- **[VS Code no PC](#rodando-no-vs-code-sem-docker)** com um ambiente virtual `.venv` (padrão atual dos notebooks).
+- **[Docker](#rodando-com-docker)**: um container com Python, PyTorch (CUDA para GPU) e todas as bibliotecas do projeto, acessado pelo **JupyterLab** no navegador.
+
+## Rodando no VS Code (sem Docker)
+
+1. Clone o repositório pelo VS Code: `Ctrl+Shift+P` → **Git: Clone** → cole a URL.
+2. Abra o terminal do VS Code com ``Ctrl+` `` e rode:
+
+   ```
+   .\setup.bat
+   ```
+
+   O script cria o ambiente virtual `.venv`, instala as bibliotecas do `requirements.txt` (incluindo o PyTorch com CUDA) e as extensões do VS Code. O download é grande (só o PyTorch tem cerca de 2,5 GB).
+3. Recarregue a janela para ativar as extensões: `Ctrl+Shift+P` → **Developer: Reload Window**.
+4. Abra um notebook, clique em **Select Kernel** no canto superior direito e escolha o `.venv`.
+
+### Caminhos nos notebooks
+
+Os notebooks vêm configurados para o VS Code, com caminhos relativos (`../data/...` e `../graficos`). Para usar no Docker, troque o comentário nas duas células:
+
+```python
+# Docker
+# DATA_DIR = Path("/app/data/Lung_Cancer")
+# VS Code (PC)
+DATA_DIR = Path("../data/Lung_Cancer")
+```
+
+O mesmo vale para o `output_dir`, na célula de hiperparâmetros.
+
+> Os caminhos relativos funcionam porque o notebook roda a partir da própria pasta (`rna_cinza/` ou `rna_cor/`). Mantenha os notebooks dentro dessas pastas.
+
+### Se aparecer "a execução de scripts foi desabilitada neste sistema"
+
+O Windows está bloqueando a ativação do `.venv` no PowerShell. Rode no terminal:
+
+```
+Set-ExecutionPolicy -Scope Process Bypass
+```
+
+Isso vale só para aquele terminal e não precisa de administrador. Outra opção é trocar o terminal para **Command Prompt** na setinha ao lado do **+** do terminal.
+
+## Rodando com Docker
+
+Lembre de trocar os caminhos dos notebooks para os do Docker (veja [Caminhos nos notebooks](#caminhos-nos-notebooks)).
 
 ## Pré-requisitos
 
