@@ -27,6 +27,7 @@ data/*
 *.hdf5
 *.pkl
 config
+firefox_downloads
 
 # Modelos treinados (arquivos grandes)
 *.pt
