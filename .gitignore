@@ -26,6 +26,9 @@ data/*
 *.h5
 *.hdf5
 *.pkl
+
+# Exceção: tabela de resultados dos treinos (não é dataset)
+!graficos/resultados.csv
 config
 firefox_downloads
 
