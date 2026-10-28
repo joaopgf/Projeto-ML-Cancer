@@ -16,8 +16,8 @@ O projeto pode rodar de duas formas:
    .\setup.bat
    ```
 
-   O script cria o ambiente virtual `.venv`, instala as bibliotecas do `requirements.txt` (incluindo o PyTorch com CUDA) e as extensões do VS Code. O download é grande (só o PyTorch tem cerca de 2,5 GB).
-3. Recarregue a janela para ativar as extensões: `Ctrl+Shift+P` → **Developer: Reload Window**.
+   O script cria o ambiente virtual `.venv`, instala as bibliotecas do `requirements.txt` (incluindo o PyTorch com CUDA) e as extensões do VS Code, ativa o salvamento automático e, no fim, recarrega a janela do VS Code sozinho. O download é grande (só o PyTorch tem cerca de 2,5 GB).
+3. Se a janela não recarregar sozinha, recarregue para ativar as extensões: `Ctrl+Shift+P` → **Developer: Reload Window**.
 4. Abra um notebook, clique em **Select Kernel** no canto superior direito e escolha o `.venv`.
 
 ### Caminhos nos notebooks
