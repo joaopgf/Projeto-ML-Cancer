@@ -1,1 +1,3 @@
 https://www.kaggle.com/datasets/obulisainaren/multi-cancer
+
+https://www.kaggle.com/datasets/kmader/skin-cancer-mnist-ham10000
