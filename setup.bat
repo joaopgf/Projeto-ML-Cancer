@@ -9,7 +9,7 @@ python -m venv .venv
 call .venv\Scripts\activate
 
 echo [2/4] Instalando pacotes Python...
-python -m pip install --upgrade pip
+python.exe -m pip install --upgrade pip
 pip install -r requirements.txt
 
 echo [3/4] Instalando extensoes do VS Code...
