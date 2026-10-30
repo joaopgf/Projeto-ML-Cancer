@@ -1,0 +1,22 @@
+#!unzip -q Lymphoma.zip -d /content/data
+
+# Montar o Google Drive
+from google.colab import drive
+import shutil
+from pathlib import Path
+
+drive.mount('/content/drive')
+
+# Caminho de origem dos resultados no Colab (ajustado de '../graficos' para o correspondente no ambiente local)
+origem_graficos = Path('/content/graficos')
+if not origem_graficos.exists() and Path('../graficos').exists():
+    origem_graficos = Path('../graficos').resolve()
+
+# Pasta de destino no seu Google Drive
+destino_drive = Path('/content/drive/MyDrive/Cervical_Cancer_Resultados')
+
+if origem_graficos.exists():
+    shutil.copytree(origem_graficos, destino_drive, dirs_exist_ok=True)
+    print(f"Sucesso! Todos os resultados e gráficos foram copiados para: {destino_drive}")
+else:
+    print("A pasta de gráficos de origem não foi encontrada. Certifique-se de rodar o treinamento e a geração de gráficos primeiro.")
