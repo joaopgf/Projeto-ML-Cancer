@@ -135,6 +135,10 @@ Não use `pip install` dentro do container: o pacote some quando o container é 
 2. Rode `docker compose up --build`.
 3. Faça commit do `requirements.txt` para todos receberem.
 
+## Teste externo
+
+O notebook `teste_externo/teste_externo.ipynb` compara os modelos de `modelos_pt/` com imagens de **outra fonte**, fora dos datasets do treino. As imagens ficam em `data/teste_externo/<cancer>/<classe>/`, por exemplo `data/teste_externo/mama/benign/`. Ele não precisa de GPU e entra todo modelo `modelos_pt/<cancer>_*.pt`.
+
 ## Datasets
 
 Usamos dois datasets públicos do Kaggle, ambos com licença [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) (com crédito, sem uso comercial e com compartilhamento pela mesma licença):
