@@ -137,6 +137,16 @@ Não use `pip install` dentro do container: o pacote some quando o container é 
 
 ## Datasets
 
+Usamos dois datasets públicos do Kaggle, ambos com licença [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) (com crédito, sem uso comercial e com compartilhamento pela mesma licença):
+
+- **[Multi Cancer Dataset](https://www.kaggle.com/datasets/obulisainaren/multi-cancer)**, de Obuli Sai Naren. O autor pede a citação em pesquisas e projetos que usem o dataset:
+
+  > Obuli Sai Naren. (2022). *Multi Cancer Dataset* [Data set]. Kaggle. https://doi.org/10.34740/KAGGLE/DSV/3415848
+
+- **[Skin Cancer MNIST: HAM10000](https://www.kaggle.com/datasets/kmader/skin-cancer-mnist-ham10000)**, publicado no Kaggle por K Scott Mader:
+
+  > Tschandl, P., Rosendahl, C. & Kittler, H. (2018). The HAM10000 dataset, a large collection of multi-source dermatoscopic images of common pigmented skin lesions. *Scientific Data*, 5, 180161. https://doi.org/10.1038/sdata.2018.161
+
 Coloque os datasets na pasta `data/`. No código, use caminhos relativos:
 
 ```python
